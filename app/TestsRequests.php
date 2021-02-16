@@ -2,6 +2,7 @@
 
 namespace Amerald\LaravelValidationTestkit;
 
+use Illuminate\Routing\Redirector;
 use Illuminate\Validation\ValidationException;
 
 trait TestsRequests
@@ -60,6 +61,8 @@ trait TestsRequests
         try {
             $request = $this->request();
             $request = new $request($expectation->input(), $expectation->input());
+            $request->setContainer($this->app);
+            $request->setRedirector(app(Redirector::class));
 
             $request->validate($request->rules());
             $passed = true;
